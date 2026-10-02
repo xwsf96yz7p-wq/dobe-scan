@@ -1,0 +1,10 @@
+DOBE Token Risk Scanner
+Version: v9-PUBLIC-SOURCES-DEGEN
+Build date: 2026-10-01
+
+Focus:
+- Scam / rug-pull risk first
+- No mandatory API keys
+- Public/on-chain sources where possible
+- Missing data reduces confidence; never treated as safe
+- Compact DEGEN MODE

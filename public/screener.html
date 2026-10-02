@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#05070a">
+  <meta name="description" content="DOBE Screener — Solana low-cap memecoin filter">
+  <title>DOBE — Screener</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#05070a;--surface:#0b1017;--surface2:#111823;--surface3:#151e2a;--border:#1d2938;--text:#edf3fa;--muted:#8495aa;--blue:#3b82f6;--blue2:#2563eb;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--cyan:#22d3ee;--shadow:0 18px 55px rgba(0,0,0,.28)}
+    *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth} body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at 50% -10%,#10203b 0,#05070a 34%);color:var(--text);min-height:100vh;line-height:1.5}.container{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+    header{text-align:center;position:relative;padding:8px 0 18px}.logo{font-size:34px;font-weight:800;letter-spacing:-1.5px}.logo span{color:var(--blue)}.tagline{margin-top:6px;color:var(--muted);font-size:14px}
+    .nav{display:flex;justify-content:center;gap:10px;margin:8px 0 4px}.nav a{font-size:12px;font-weight:700;text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:8px;color:var(--muted)}.nav a.active{color:#fff;background:rgba(59,130,246,.12);border-color:var(--blue)}
+    .card{background:rgba(11,16,23,.94);border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+    .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .meta .left{font-size:12px;color:var(--muted)}.meta .left strong{color:var(--text)}
+    .filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+    .chip{font-size:10px;font-weight:700;padding:5px 8px;border-radius:999px;border:1px solid var(--border);background:var(--surface2);color:var(--muted)}
+    .token{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--surface2);margin-bottom:8px}
+    .token:hover{border-color:rgba(59,130,246,.4)}
+    .logo-img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:var(--surface3);border:2px solid var(--border)}
+    .logo-ph{width:48px;height:48px;border-radius:50%;background:var(--surface3);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;font-size:14px}
+    .info{min-width:0}.sym{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.name{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px}
+    .stats span{color:var(--muted)}.stats b{color:var(--text);font-weight:600}
+    .pos{color:var(--green)!important}.neg{color:var(--red)!important}
+    .btns{display:flex;flex-direction:column;gap:5px}
+    .btns a{display:block;text-align:center;font-size:10px;font-weight:800;padding:6px 10px;border-radius:8px;text-decoration:none;border:1px solid var(--border);color:var(--text);background:var(--surface3);min-width:72px}
+    .btns a:hover{border-color:var(--blue);color:#fff}
+    .btns a.gmgn{border-color:rgba(59,130,246,.35);color:var(--blue)}
+    .btns a.pump{border-color:rgba(34,197,94,.35);color:var(--green)}
+    .btns a.axiom{border-color:rgba(234,179,8,.35);color:var(--yellow)}
+    .loading{text-align:center;padding:40px 10px;color:var(--muted)}
+    .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
+    .empty{text-align:center;padding:28px;color:var(--muted);font-size:13px}
+    .disclaimer{margin-top:18px;font-size:11px;color:var(--muted);text-align:center;line-height:1.6}
+    .footer{text-align:center;margin-top:24px;color:#526174;font-size:11px}
+    .refresh{font-size:11px;font-weight:700;color:var(--blue);background:transparent;border:1px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer}
+    .refresh:hover{border-color:var(--blue)}
+    @media(max-width:650px){.container{padding:18px 12px 45px}.token{grid-template-columns:40px 1fr;}.btns{flex-direction:row;grid-column:1/-1;justify-content:flex-start}.logo-img,.logo-ph{width:40px;height:40px}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">DOBE <span>SCAN</span></div>
+    <div class="nav">
+      <a href="/">CHECKER</a>
+      <a href="/screener" class="active">SCREENER</a>
+    </div>
+    <div class="tagline">Solana low-cap filter · auto list</div>
+  </header>
+
+  <section class="card">
+    <div class="meta">
+      <div class="left">Updated: <strong id="updated">—</strong> · Tokens: <strong id="count">—</strong></div>
+      <button class="refresh" onclick="load()">Refresh</button>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div id="list"><div class="loading"><div class="spinner"></div>Scanning…</div></div>
+  </section>
+
+  <p class="disclaimer">Filters use free public DexScreener data only. Not financial advice. Always DYOR. Missing deeper holder/dev checks are intentional for speed.</p>
+  <div class="footer">DOBE · Screener</div>
+</div>
+
+<script>
+function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function fmtNum(n){if(n==null||Number.isNaN(Number(n)))return '—';n=Number(n);if(Math.abs(n)>=1e6)return (n/1e6).toFixed(2)+'M';if(Math.abs(n)>=1e3)return (n/1e3).toFixed(1)+'K';if(Math.abs(n)<1)return n.toPrecision(3);return n.toFixed(2);}
+function fmtMoney(n){return n==null?'—':'$'+fmtNum(n);}
+function ageTxt(h){if(h==null)return '—';if(h<1)return Math.round(h*60)+'m';if(h<24)return h.toFixed(1)+'h';return (h/24).toFixed(1)+'d';}
+function chgClass(v){if(v==null)return '';return v>0?'pos':v<0?'neg':'';}
+
+async function load(){
+  const list=document.getElementById('list');
+  list.innerHTML='<div class="loading"><div class="spinner"></div>Scanning…</div>';
+  try{
+    const res=await fetch('/api/screener?t='+Date.now(),{headers:{Accept:'application/json'}});
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Error');
+    document.getElementById('updated').textContent=new Date(data.updatedAt).toLocaleTimeString();
+    document.getElementById('count').textContent=data.count;
+    const f=data.filters||{};
+    document.getElementById('filters').innerHTML=Object.entries(f).map(([k,v])=>`<span class="chip">${esc(k)}: ${esc(v)}</span>`).join('');
+    if(!data.tokens?.length){
+      list.innerHTML='<div class="empty">No tokens matched current filters. Try again in a minute.</div>';
+      return;
+    }
+    list.innerHTML=data.tokens.map(t=>{
+      const ch1=t.priceChange1h, ch24=t.priceChange24h;
+      const logo=t.logo?`<img class="logo-img" src="${esc(t.logo)}" alt="" onerror="this.outerHTML='<div class=\\'logo-ph\\'>${esc((t.symbol||'?').slice(0,2))}</div>'">`:`<div class="logo-ph">${esc((t.symbol||'?').slice(0,2))}</div>`;
+      return `<div class="token">
+        ${logo}
+        <div class="info">
+          <div class="sym">$${esc(t.symbol)} <span style="font-size:11px;color:var(--muted);font-weight:600">${esc(t.name)}</span></div>
+          <div class="name">${esc(t.address.slice(0,6))}…${esc(t.address.slice(-4))} · ${esc(t.dex||'dex')}</div>
+          <div class="stats">
+            <span>MC <b>${fmtMoney(t.marketCap)}</b></span>
+            <span>Liq <b>${fmtMoney(t.liquidity)}</b></span>
+            <span>Vol1h <b>${fmtMoney(t.volume1h)}</b></span>
+            <span>Age <b>${ageTxt(t.ageHours)}</b></span>
+            <span class="${chgClass(ch1)}">1h <b>${ch1==null?'—':(ch1>0?'+':'')+Number(ch1).toFixed(1)+'%'}</b></span>
+            <span class="${chgClass(ch24)}">24h <b>${ch24==null?'—':(ch24>0?'+':'')+Number(ch24).toFixed(1)+'%'}</b></span>
+          </div>
+        </div>
+        <div class="btns">
+          <a class="gmgn" href="${esc(t.links.gmgn)}" target="_blank" rel="noopener">GMGN</a>
+          <a class="pump" href="${esc(t.links.pump)}" target="_blank" rel="noopener">PUMP</a>
+          <a class="axiom" href="${esc(t.links.axiom)}" target="_blank" rel="noopener">AXIOM</a>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    list.innerHTML=`<div class="empty" style="color:var(--red)">${esc(e.message||'Network error')}</div>`;
+  }
+}
+load();
+setInterval(load, 45000);
+</script>
+</body>
+</html>
