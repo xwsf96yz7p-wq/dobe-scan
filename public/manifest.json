@@ -1,0 +1,25 @@
+{
+  "name": "DOBE Scan",
+  "short_name": "DOBE",
+  "description": "Solana low-cap degen screener",
+  "start_url": "/screener",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#05070a",
+  "theme_color": "#05070a",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
