@@ -1,0 +1,24 @@
+name = "dobe-scan"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+
+[[kv_namespaces]]
+binding = "SMART_CACHE"
+id = "c257b1bd4c48463c977f29c04633b606"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dobe-db"
+database_id = "363d2302-ac51-431f-b3e1-e5355b7f70d9"
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[vars]
+# VAPID keys are set as Secrets in Cloudflare Dashboard:
+# VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY
