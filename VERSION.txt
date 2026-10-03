@@ -1,0 +1,10 @@
+DOBE Token Risk Scanner
+Version: v20-EARLY-MOMENTUM
+Build date: 2026-10-03
+
+Focus:
+- Catch tokens before strong moves
+- Filter bots / dead / no-smart / thin pools
+- Free sources only (DexScreener + smart wallets)
+- Three modes: Showcase / Degen / Sniper
+- Push notifications improved for iOS home-screen
